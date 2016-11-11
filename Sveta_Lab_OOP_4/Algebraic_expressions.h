@@ -9,6 +9,8 @@ class Algebraic_expressions
 private:
 	string expression;
 	string *elements;
+
+	string findIntegral(string*);
 public:
 	Algebraic_expressions(string);
 	Algebraic_expressions(char*);
@@ -16,9 +18,13 @@ public:
 
 	string getExpression();
 
+	
+	string* parseStr(string);
+
 	Algebraic_expressions operator - ();
 	Algebraic_expressions operator + (Algebraic_expressions);
 	Algebraic_expressions operator - (Algebraic_expressions);
+	Algebraic_expressions operator ! ();
 
 	~Algebraic_expressions();
 };
