@@ -1,6 +1,11 @@
 ﻿  Sveta_Lab_OOP_4.cpp
   Algebraic_expressions.cpp
-c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(50): warning C4101: parseResults: неиспользованная локальная переменная
-c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(66): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(71): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(154): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(188): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(209): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  c:\program files\windows kits\10\include\10.0.10240.0\ucrt\stdlib.h(1316): note:  см. объявление "itoa"
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(211): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  c:\program files\windows kits\10\include\10.0.10240.0\ucrt\stdlib.h(1316): note:  см. объявление "itoa"
   Создание кода...
   Sveta_Lab_OOP_4.vcxproj -> C:\Users\Наталія\documents\visual studio 2015\Projects\Sveta_Lab_OOP_4\Debug\Sveta_Lab_OOP_4.exe
