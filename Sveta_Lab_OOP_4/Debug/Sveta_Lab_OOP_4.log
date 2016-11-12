@@ -1,4 +1,6 @@
-﻿  Algebraic_expressions.cpp
+﻿  Sveta_Lab_OOP_4.cpp
+  Algebraic_expressions.cpp
 c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(50): warning C4101: parseResults: неиспользованная локальная переменная
-c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(65): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\наталія\documents\visual studio 2015\projects\sveta_lab_oop_4\sveta_lab_oop_4\algebraic_expressions.cpp(66): warning C4018: <: несоответствие типов со знаком и без знака
+  Создание кода...
   Sveta_Lab_OOP_4.vcxproj -> C:\Users\Наталія\documents\visual studio 2015\Projects\Sveta_Lab_OOP_4\Debug\Sveta_Lab_OOP_4.exe

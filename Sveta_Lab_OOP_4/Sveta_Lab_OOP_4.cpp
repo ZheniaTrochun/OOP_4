@@ -21,14 +21,12 @@ int main()
 	cout << e4.getExpression() << endl;
 	cout << e5.getExpression() << endl;
 
-	string *parse = e1.parseStr(e1.getExpression());
+	/*
+	int counter = 0;
+	string *parse = e1.parseStr(&counter);
 
-	cout << parse[0] << endl;
-	cout << parse[1] << endl;
-	cout << parse[2] << endl;
-	cout << parse[3] << endl;
-	cout << parse[4] << endl;
-	cout << parse[5] << endl;
+	for (int i(0); i < counter; i++)
+		cout << parse[i] << endl;*/
 
 	system("pause");
 
