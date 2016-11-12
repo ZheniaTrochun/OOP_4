@@ -246,7 +246,18 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 		}
 	}
 
-	return result + " + C";
+	result += " + C";
+	
+	while(result.find("- -") != string::npos)
+		result = result.replace(result.find("- -"), sizeof("+") + 1, "+");
+
+	while (result.find("- +") != string::npos)
+		result = result.replace(result.find("- +"), sizeof("-") + 1, "-");
+
+	while (result.find("+ -") != string::npos)
+		result = result.replace(result.find("- -"), sizeof("-") + 1, "-");
+
+	return result;
 }
 
 
