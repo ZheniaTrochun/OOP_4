@@ -29,19 +29,42 @@ string Algebraic_expressions::getExpression()
 // Operators
 Algebraic_expressions Algebraic_expressions::operator-()
 {
-	Algebraic_expressions reverseExpression("- (" + expression + ")");
+	string str = expression;
+
+	// reverse all -/+
+	for (int i(1); i < str.length(); i++) 
+	{
+		if (str.at(i) == '-')
+		{
+			str.at(i) = '+';
+			continue;
+		}
+
+		if (str.at(i) == '+')
+		{
+			str.at(i) = '-';
+			continue;
+		}
+	}
+
+	Algebraic_expressions reverseExpression(prettyStr("- " + str));
 	return reverseExpression;
 }
 
 Algebraic_expressions Algebraic_expressions::operator+(Algebraic_expressions newExpression)
 {
-	Algebraic_expressions sumExpression(expression + " + (" + newExpression.getExpression() + ")");
+	// just concatenated expressions and removed not needed chars
+	string str = expression + " + " + newExpression.getExpression();
+	Algebraic_expressions sumExpression(prettyStr(str));
 	return sumExpression;
 }
 
 Algebraic_expressions Algebraic_expressions::operator-(Algebraic_expressions newExpression)
 {
-	Algebraic_expressions subExpression(expression + " - (" + newExpression.getExpression() + ")");
+	// add reversed expression from argument
+	string str = expression + " + " + (-newExpression).getExpression();
+
+	Algebraic_expressions subExpression(prettyStr(str));
 	return subExpression;
 }
 
@@ -255,6 +278,17 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 	
 
 	// make result string pretty
+	result = prettyStr(result);
+
+	return result;
+}
+
+// for making all resulting strings pretty
+string Algebraic_expressions::prettyStr(string str)
+{
+
+	string result = str;
+
 	while ((result.find("- -") != string::npos) || (result.find("- +") != string::npos) || (result.find("+ -") != string::npos))
 	{
 		if (result.find("- -") != string::npos)
@@ -267,6 +301,10 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 			result = result.replace(result.find("+ -"), sizeof("-") + 1, "-");
 	}
 
+	if (result.at(0) == '+')
+	{
+		result = result.substr(2, 1024);
+	}
 
 	return result;
 }

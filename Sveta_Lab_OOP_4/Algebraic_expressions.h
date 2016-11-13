@@ -12,6 +12,7 @@ private:
 
 	string* parseStr(int*);
 	string findIntegral(string*, int);
+	string prettyStr(string);
 public:
 	Algebraic_expressions(string);
 	Algebraic_expressions(char*);
