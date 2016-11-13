@@ -78,6 +78,8 @@ Algebraic_expressions Algebraic_expressions::operator!()
 
 	integral = findIntegral(parseResults, counter);
 
+	//integral = optimize(integral);
+
 	Algebraic_expressions ae(integral);
 
 	return ae;
@@ -289,6 +291,11 @@ string Algebraic_expressions::prettyStr(string str)
 
 	string result = str;
 
+	if (result.at(0) == ' ')
+	{
+		result = result.substr(1, 1024);
+	}
+
 	while ((result.find("- -") != string::npos) || (result.find("- +") != string::npos) || (result.find("+ -") != string::npos))
 	{
 		if (result.find("- -") != string::npos)
@@ -307,6 +314,163 @@ string Algebraic_expressions::prettyStr(string str)
 	}
 
 	return result;
+}
+
+string Algebraic_expressions::optimize(string str)
+{
+	int counter = 0;
+	Algebraic_expressions ae(str);
+	string *arr = ae.parseStr(&counter);
+
+	int *numArr = new int[counter];
+	string res;
+	string *tmpNumArr = new string[counter];
+
+	for (int i(0); i < counter; i++)
+	{
+		numArr[i] = 1;
+	}
+
+	for (int i(0); i < counter; i++)
+	{
+		if (arr[i].at(0) == '-')					//
+		{											// check for negative operands
+			numArr[i] *= -1;						// just add "- " to the rusult array[i]
+			arr[i] = arr[i].substr(1, 1024);		// remove "-" from input string array 
+		}
+	}
+
+	for (int i(0); i < counter; i++)
+	{
+		if (arr[i] == "") continue;					// kostil' na vsiakii vipadok
+
+		if (isdigit(arr[i].at(0)))					// if first char at string is number
+		{
+			bool check = true;	// flag for checking is full str[i] number
+			int index = 0;		// if not all str[i] number - index of "*"
+
+			for (int j(1); j < arr[i].length(); j++)
+			{
+				if (!isdigit(arr[i].at(j)))	// if not number
+				{
+					check = false;
+				}
+				if (arr[i].at(j) == '*')							// if after number "*" index = j
+				{
+					index = j;
+				}
+			}
+
+			if (check)												// if all str[i] number
+			{
+				//numArr[i] *= atoi(arr[i].c_str());
+				numArr[i] *= makeDigit(arr[i]);
+				arr[i] = "";
+			}
+
+			if (index != 0)											// if <number>*<expression>
+			{
+				//numArr[i] *= atoi(arr[i].substr(0, index + 1).c_str());
+				numArr[i] *= makeDigit(arr[i].substr(0, index));
+				arr[i] = arr[i].substr(index + 1, 1024);
+			}
+		}
+	}
+
+	for (int i(0); i < counter; i++)
+	{
+		if (!tmpNumArr[i].empty())
+		{
+			numArr[i] *= makeDigit(tmpNumArr[i]);
+			//numArr[i] *= atoi(tmpNumArr[i].c_str());
+		}
+	}
+
+	for (int i(0); i < counter; i++)
+	{
+		for (int j = i + 1; j < counter; j++)
+		{
+			if (arr[i].compare(arr[j]) == 0)
+			{
+				numArr[i] += numArr[j];
+				numArr[j] = 0;
+			}
+		}
+	}
+
+	for (int i(0); i < counter; i++)
+	{
+		if (numArr[i] == 0)
+			continue;
+
+		if (numArr[i] == 1)
+		{
+			res += " + " + arr[i];
+			continue;
+		}
+
+		if (numArr[i] == -1)
+		{
+			res += " - " + arr[i];
+			continue;
+		}
+
+		if (arr[i].empty())
+		{
+			res += " + " + makeString(numArr[i]);
+			continue;
+		}
+
+		res += " + " + makeString(numArr[i]) + "*" + arr[i];
+	}
+
+	res = prettyStr(res);
+
+	return res;
+}
+
+
+int Algebraic_expressions::makeDigit(string str)
+{
+	int res = 0;
+
+	for (int i = str.length() - 1, j = 0; i >= 0; i--, j++)
+	{
+		res += atoi(&str.at(i)) * pow(10, j);
+	}
+
+	return res;
+}
+
+string Algebraic_expressions::makeString(int num)
+{
+	char buffer[1024];
+	bool flag = false;
+
+	if (num < 0)
+	{
+		num *= -1;
+		flag = true;
+	}
+
+	int num1 = num;
+
+	string str;
+
+	for (int i(0); i < log10(num); i++)
+	{
+		int tmp = num1 % 10;
+		str = itoa(tmp, buffer, 1024) + str;
+		num1 -= tmp;
+		num1 /= 10;
+	}
+	
+	if (flag)
+	{
+		str = "- " + str;
+	}
+
+	return str;
 }
 
 
