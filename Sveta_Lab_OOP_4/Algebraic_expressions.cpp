@@ -64,26 +64,28 @@ Algebraic_expressions Algebraic_expressions::operator!()
 // Private functions
 string* Algebraic_expressions::parseStr(int *counter)
 {
-	string str = expression;
-	string *parseArr = new string[str.length()];
-	*counter = 0;
+	string str = expression;	// temp string with expression
+
+	string *parseArr = new string[str.length()]; // temp array
+
+	*counter = 0;	// counter of len resulying array
 
 	for (int i(0); i < str.length(); i++)
 	{
-		if (str.at(i) == '-')
+		if (str.at(i) == '-')	// if we found '-' we replace it with "+ -"
 		{
 			str = str.substr(0, i) + "+ -" + str.substr(i + 2, 1024);
 			i += 3;
 		}
 	}
 
+	// split str by delim " + " to temp array
 	while (true)
 	{
 		int pos = str.find(" + ");
 
 		if (pos == string::npos)
 		{
-
 			break;
 		}
 
@@ -95,6 +97,7 @@ string* Algebraic_expressions::parseStr(int *counter)
 	parseArr[*counter] = str;
 	*counter += 1;
 
+	// make result array of right len
 	string *ret = new string[*counter + 1];
 
 	for (int i(0); i < *counter; i++)
@@ -107,8 +110,8 @@ string* Algebraic_expressions::parseStr(int *counter)
 
 string Algebraic_expressions::findIntegral(string* str, int counter)
 {
-	string result;
-	string *resArr = new string[counter]; // arr jf resulting strings
+	string result; // resulting string
+	string *resArr = new string[counter]; // arr for resulting strings
 	string *expr = new string[10]; // arr for expressions
 	string *integr = new string[10]; // arr for integrals of expressions
 	expr[0] = "exp(x)";
@@ -136,40 +139,41 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 
 	for (int i(0); i < counter; i++) 
 	{
-		if (str[i].at(0) == '-')
-		{
-			resArr[i] += "- ";
-			str[i] = str[i].substr(1, 1024);
+		if (str[i].at(0) == '-')					//
+		{											// check for negative operands
+			resArr[i] += "- ";						// just add "- " to the rusult array[i]
+			str[i] = str[i].substr(1, 1024);		// remove "-" from input string array 
 		}
 	}
 
 	for (int i(0); i < counter; i++)
 	{
-		if (str[i] == "") continue;
-		if (isdigit(str[i].at(0)))
+		if (str[i] == "") continue;					// kostil' na vsiakii vipadok
+
+		if (isdigit(str[i].at(0)))					// if first char at string is number
 		{
-			bool check = true;
-			int index = 0;
+			bool check = true;	// flag for checking is full str[i] number
+			int index = 0;		// if not all str[i] number - index of "*"
 
 			for (int j(1); j < str[i].length(); j++)
 			{
-				if(!isdigit(str[i].at(j)) && str[i].at(j) != '.')
-				{
-					check = false;
+				if(!isdigit(str[i].at(j)) && str[i].at(j) != '.')	// if not number
+				{			
+					check =	false;
 				}
-				if (str[i].at(j) == '*')
+				if (str[i].at(j) == '*')							// if after number "*" index = j
 				{
 					index = j;
 				}
 			}
 
-			if (check)
+			if (check)												// if all str[i] number
 			{
 				resArr[i] += str[i] + "*x";
 				str[i] = "";
 			}
 
-			if (index != 0)
+			if (index != 0)											// if not <number>*<expression>
 			{
 				resArr[i] += str[i].substr(0, index + 1);
 				str[i] = str[i].substr(index + 1, 1024);
@@ -179,8 +183,7 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 
 	for (int i(0); i < counter; i++)
 	{
-		int ind = str[i].find("x^(");
-		if (ind == 0)
+		if (str[i].find("x^(") == 0)								// if it's x^(<number>)
 		{
 			string tmp = str[i].substr(3, str[i].length() - 4);
 			bool check = true;
@@ -194,12 +197,12 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 				}
 			}
 
-			if (!check)
+			if (!check)												// if <number> not number
 			{
 				resArr[i] += "";
 			}
 			
-			if (check)
+			if (check)												// if all good we make intergation
 			{
 				const char *charArr = tmp.c_str();
 				char buf[1024];
@@ -218,7 +221,7 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 	{
 		for (int j(0); j < 10; j++)
 		{
-			if (str[i].compare(expr[j]) == 0)
+			if (str[i].compare(expr[j]) == 0)						// integration of parts of str from simple integrals table
 			{
 				resArr[i] += integr[j];
 				str[i] = "";
@@ -226,9 +229,11 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 		}
 	}
 
+
+	// concatenation of resulting arrays into rusult string
 	for (int i(0); i < counter; i++)
 	{
-		if (!str[i].empty())
+		if (!str[i].empty())										// if we can't integrate expression we just weite this
 		{
 			resArr[i] += "integral_of(" + str[i] + ")";
 		}
@@ -246,16 +251,22 @@ string Algebraic_expressions::findIntegral(string* str, int counter)
 		}
 	}
 
-	result += " + C";
+	result += " + C"; // add " + C" at the end
 	
-	while(result.find("- -") != string::npos)
-		result = result.replace(result.find("- -"), sizeof("+") + 1, "+");
 
-	while (result.find("- +") != string::npos)
-		result = result.replace(result.find("- +"), sizeof("-") + 1, "-");
+	// make result string pretty
+	while ((result.find("- -") != string::npos) || (result.find("- +") != string::npos) || (result.find("+ -") != string::npos))
+	{
+		if (result.find("- -") != string::npos)
+			result = result.replace(result.find("- -"), sizeof("+") + 1, "+");
 
-	while (result.find("+ -") != string::npos)
-		result = result.replace(result.find("- -"), sizeof("-") + 1, "-");
+		if (result.find("- +") != string::npos)
+			result = result.replace(result.find("- +"), sizeof("-") + 1, "-");
+
+		if (result.find("+ -") != string::npos)
+			result = result.replace(result.find("+ -"), sizeof("-") + 1, "-");
+	}
+
 
 	return result;
 }
